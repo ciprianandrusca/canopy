@@ -179,9 +179,12 @@ export default {
 const defaultCardTemplate = `
 <lg-card>
   <lg-card-header>
-    <lg-card-title [headingLevel]="headingLevel">
-      {{title}}
-    </lg-card-title>
+    <lg-card-navigation-title *ngIf="link else noLink" [title]="title" [headingLevel]="headingLevel"></lg-card-navigation-title>
+    <ng-template #noLink>
+      <lg-card-title [headingLevel]="headingLevel">
+        {{title}}
+      </lg-card-title>
+    </ng-template>
   </lg-card-header>
   <lg-card-content>
     {{cardContent}} <a href="#">Test link</a>.
@@ -198,6 +201,39 @@ export const defaultCard = defaultCardStory.bind({});
 defaultCard.storyName = 'Standard';
 
 defaultCard.args = {
+  headingLevel: 2,
+  title: 'The title',
+  cardContent: content,
+};
+
+defaultCard.parameters = {
+  docs: {
+    source: {
+      code: defaultCardTemplate,
+    },
+  },
+};
+
+const navigationCardTemplate = `
+<lg-card lgCardNavigation>
+  <lg-card-header>
+    <lg-card-navigation-title [title]="title" link="https://www.landg.com" [headingLevel]="headingLevel"></lg-card-navigation-title>
+  </lg-card-header>
+  <lg-card-content>
+    {{cardContent}} <a href="#">Test link</a>.
+  </lg-card-content>
+</lg-card>
+`;
+
+const navigationCardStory: Story<LgCardComponent> = (args: LgCardComponent) => ({
+  props: args,
+  template: navigationCardTemplate,
+});
+
+export const navigationCard = navigationCardStory.bind({});
+navigationCard.storyName = 'Card Navigation';
+
+navigationCard.args = {
   headingLevel: 2,
   title: 'The title',
   cardContent: content,
